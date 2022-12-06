@@ -24,11 +24,11 @@ Plan:
     - _income => Number - **Needs special care to stay up to date** ???
       - getIncome() => return  this._income
       - updateIncome() => set this._income based on Object.values(this.getIncomeSources()).reduce( (total, source) => total + source.amount, 0 )
-    - _availableIncome => Number **Needs special care to stay up to date** ???
-      - getAvailableIncome() => return this._availableIncome
-      - updateAvailableIncome() =>  set this._availableIncome based on this.getIncome() - Object.values(this.getEnvelopes()).reduce( (total, envelope) => total + envelope.amount, 0 )
+    - _availableAmount => Number **Needs special care to stay up to date** ???
+      - getAvailableAmount() => return this._availableIncome
+      - updateAvailableAmount() =>  set this._availableIncome based on this.getIncome() - Object.values(this.getEnvelopes()).reduce( (total, envelope) => total + envelope.amount, 0 )
 
-  - Transaction => **Kind of an abstract class**
+  - FinanceElement => **Kind of an abstract class**
     -  if (new.target === Abstract) {
         throw new TypeError("Cannot construct Abstract instances directly");
       } in constructor
@@ -44,20 +44,20 @@ Plan:
     - _parent => class instance  ***Bad for coupling but I don't see how else to do it***
       - getParent() => return parent instance class 
 
-  - Income(Transaction)
+  - Income(FinanceElement)
     - _counter => To give a uniqueID
       - use _counter++ in constructor
     - setAmount(amount)
       - ***Must trigger [budget].updateIncome()***
       - ***Must trigger [budget].updateAvailableIncome()***
 
-  - Expense(Transaction)
+  - Expense(FinanceElement)
     - _counter => To give a uniqueID
       - use _counter++ in constructor
     - setAmount(amount)
       - ***Must trigger [envelope].updateAvailableAmount()***
 
-  - Envelope(Transaction)
+  - Envelope(FinanceElement)
     - _counter => To give a uniqueID
       - use _counter++ in constructor
     - _expenses => Object {'ExpenseID': Expense}
