@@ -42,6 +42,7 @@ Plan:
     - _amount => Number
       - getAmount()
       - setAmount(amount)
+        - this.getParent().updateAvailableAmount()
     - _parent => class instance  ***Bad for coupling but I don't see how else to do it***
       - getParent() => return parent instance class 
 
@@ -50,13 +51,14 @@ Plan:
       - use _counter++ in constructor
     - setAmount(amount)
       - ***Must trigger [budget].updateIncome()***
-      - ***Must trigger [budget].updateAvailableIncome()***
+      - ~***Must trigger [budget].updateAvailableAmount()***~
 
   - Expense(FinanceElement)
     - _counter => To give a uniqueID
       - use _counter++ in constructor
     - setAmount(amount)
-      - ***Must trigger [envelope].updateAvailableAmount()***
+      - amount - this.amount >= this.getParent().availableAmount
+      - ~***Must trigger [envelope].updateAvailableAmount()***~
 
   - Envelope(FinanceElement)
     - _counter => To give a uniqueID
@@ -71,6 +73,8 @@ Plan:
     - _availableAmount => Number **Needs special care to stay up to date** ???
       - getAvailableAmount()  => return this._availableAmount
       - updateAvailableAmount()  =>  set this._availableAmount based on this.getAmount() - Object.values(this.getExpenses()).reduce( (total, expense) => total + expense.amount, 0 )
+    - setAmount(amount)
+      - amount - this.amount >= this.getParent().availableAmount
 
 - Use ObserverPattern to monitor changes and keep everything coherent ???
   - Listen:
