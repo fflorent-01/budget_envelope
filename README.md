@@ -17,6 +17,7 @@ Plan:
     - _envelopes => Object {'EnvelopeID': Envelope, ...}
       - getEnvelopes() => return  this._envelopes
       - getEnvelopeById('envelopeId') => return specific Envelope object
+      - getEnvelopeByExpenseId('expenseId') => return Evelope object ???
       - addEnvelopes(name, descritption, amount) => return new created Envelope object
         - Must trigger this.updateAvailableIncome()
       - removeEnvelope('envelopeId') => Delete a specific Envelope
