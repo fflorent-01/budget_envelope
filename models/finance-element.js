@@ -4,6 +4,8 @@ class FinanceElement {
             throw new TypeError(`${new.target} is meant as an abstract class and cannot be directly instanciated.`)
         }
         this._parent = parent
+        this._parentType = parent.constructor.name
+        this._parentId = parent.id || ""
         this._name = name
         this._description = description
         this._amount = amount
@@ -13,11 +15,17 @@ class FinanceElement {
     get parent () {
         return this._parent
     }
+    get parentType () {
+        return this._parentType
+    }
+    get parentId () {
+        return this._parentId
+    }
 
     get name () {
         return this._name
     }
-    set (name) {
+    set name (name) {
         if (typeof name !== 'string' || name === "") {
             throw new Error(`[${name}] is not a valid name, a string is needed.`)
         }
@@ -28,7 +36,7 @@ class FinanceElement {
     get description () {
         return this._description
     }
-    set (description) {
+    set description (description) {
         if (typeof description !== 'string') {
             throw new Error(`[${description}] is not a valid description, a string is needed.`)
         }
@@ -46,9 +54,21 @@ class FinanceElement {
             throw new Error(`Amount (${amount}) must be a positive number.`)
         }
 
+        // I don't like how this is coupled I'll have to find a better design
+        const isIncome = this.constructor.name === 'Income'
+        if ( !isIncome ) {
+            if ( amount > this.parent.availableAmount ) {
+                throw new Error(
+                    `Amount (${amount} is greater than the available amount (${this.parent.availableAmount}) )`
+                    )
+            }
+        }
         this._amount = amount
+        if ( isIncome ) {
+            this.parent.updateIncome()
+        }
         this.parent.updateAvailableAmount()
-    }
+     }
 }
 
 module.exports = FinanceElement

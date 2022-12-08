@@ -1,14 +1,15 @@
 // TODO: Check the json export
+// TODO: Integrate the Expense model
 const FinanceElement = require("./finance-element")
 
-_incomeCounter = 0
+_envelopeCounter = 0
 
-class Income extends FinanceElement {
+class Envelope extends FinanceElement {
 
     constructor (parent, name, description, amount) {
         super(parent, name, description, amount)
-        _incomeCounter++
-        this._id = _incomeCounter
+        _envelopeCounter++
+        this._id = _envelopeCounter
     }
 
     get id () {
@@ -17,4 +18,4 @@ class Income extends FinanceElement {
 
 }
 
-module.exports = Income
+module.exports = Envelope
