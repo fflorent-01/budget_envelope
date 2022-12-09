@@ -2,64 +2,7 @@ const assert = require("chai").assert;
 const Budget = require("../../models/budget");
 const Income = require("../../models/income")
 const Envelope = require("../../models/envelope")
-
-const dummyIncomeSources = [
-    [
-        "First Job",
-        "Money from first job",
-        1000
-    ],
-    [
-        "Second Job",
-        "Money from second job",
-        2000
-    ],
-    [
-        "Third Job",
-        "Money from third job",
-        3000
-    ]
-]
-
-const dummyEnvelopes = [
-    [
-        "Mortgage",
-        "Paying for the house",
-        2000
-    ],
-    [
-        "Food",
-        "All groceries, snacks",
-        1000
-    ],
-    [
-        "Misc",
-        "Everything else",
-        2000
-    ]
-]
-
-const createNewBudget = () => {
-    const budget = new Budget()
-
-    const sources = []
-    for (let [name, description, amount] of dummyIncomeSources) {
-        sources.push(budget.addIncomeSource(name, description, amount))
-    }
-
-    const envelopes = []
-    for (let [name, description, amount] of dummyEnvelopes) {
-        envelopes.push(budget.addEnvelope(name, description, amount))
-    }
-
-    const newbudget = {}
-    newbudget.budget = budget
-    newbudget.sources = sources
-    newbudget.envelopes = envelopes
-
-    return newbudget
-}
-
+const createNewBudget = require("./dummyBudget")
 
 describe("Budget Class", function () {
     
@@ -122,7 +65,7 @@ describe("Budget Class", function () {
                 assert.equal(budget.income, 6000)
             })
             it("correclty triggers updateAvailableAmount()", function() {
-                assert.equal(budget.availableAmount, 1000)
+                assert.equal(budget.availableAmount, 2250)
             })
         })
         describe("getIncomeSourceById()", function () {
@@ -144,11 +87,18 @@ describe("Budget Class", function () {
                     3: sources[2]
                 })
             })
+            it("correclty updates income", function() {
+                assert.strictEqual(budget.income, 4000)
+            })
+            it("correclty updates availableAmount", function() {
+                assert.strictEqual(budget.availableAmount, 250)
+            })
         })        
     })
 
     describe("Envelope", function () {
         const { budget, envelopes } = createNewBudget()
+        // This is done in the createNewBudget
         describe("using addEnvelope()", function() {
             it("return Envelope instances", function() {
                 assert.instanceOf(envelopes[0], Envelope)
@@ -163,7 +113,7 @@ describe("Budget Class", function () {
                 })
             })
             it("correclty triggers updateAvailableAmount()", function() {
-                assert.equal(budget.availableAmount, 1000)
+                assert.equal(budget.availableAmount, 2250)
             })
         })
         describe("getEnvelopeById()", function () {
@@ -184,6 +134,9 @@ describe("Budget Class", function () {
                     4: envelopes[0],
                     6: envelopes[2]
                 })
+            })
+            it("correctly update availableAmount", function () {
+                assert.strictEqual(budget.availableAmount, 2750)
             })
         })
     })

@@ -1,67 +1,12 @@
-// TODO: Integrate the Expense model
 const assert = require("chai").assert;
 const Budget = require("../../models/budget");
-
-const dummyIncomeSources = [
-    [
-        "First Job",
-        "Money from first job",
-        1000
-    ],
-    [
-        "Second Job",
-        "Money from second job",
-        2000
-    ],
-    [
-        "Third Job",
-        "Money from third job",
-        3000
-    ]
-]
-
-const dummyEnvelopes = [
-    [
-        "Mortgage",
-        "Paying for the house",
-        1500
-    ],
-    [
-        "Food",
-        "All groceries, snacks",
-        1000
-    ],
-    [
-        "Misc",
-        "Everything else",
-        1250
-    ]
-]
-
-const createNewBudget = () => {
-    const budget = new Budget()
-
-    const sources = []
-    for (let [name, description, amount] of dummyIncomeSources) {
-        sources.push(budget.addIncomeSource(name, description, amount))
-    }
-
-    const envelopes = []
-    for (let [name, description, amount] of dummyEnvelopes) {
-        envelopes.push(budget.addEnvelope(name, description, amount))
-    }
-
-    const newbudget = {}
-    newbudget.budget = budget
-    newbudget.sources = sources
-    newbudget.envelopes = envelopes
-
-    return newbudget
-}
+const createNewBudget = require("./dummyBudget")
 
 describe("Envelope", function () {
-    const { budget, envelopes } = createNewBudget()
+    const { budget, envelopes, expenses } = createNewBudget()
     const envelope = envelopes[0]
+    const envelopeWithExpense = envelopes[2]
+    const expense = expenses[0]
     describe("get operations", function () {
         it("get parent", function () {
             assert.deepEqual(envelope.parent, budget)
@@ -83,6 +28,19 @@ describe("Envelope", function () {
         })
         it("get id", function () {
             assert.strictEqual(envelope.id, envelopes[0].id)
+        })
+        it("get expenses", function () {
+            assert.deepEqual(envelopeWithExpense.expenses, {
+                7: expenses[0],
+                8: expenses[1],
+                9: expenses[2]
+            })
+        })
+        it("get getExpenseById", function () {
+            assert.deepEqual(envelopeWithExpense.getExpenseById("8"), expenses[1])
+        })
+        it("get availableAmount", function () {
+            assert.strictEqual(envelopeWithExpense.availableAmount, 250)
         })
     })
     describe("set name" , function () {
@@ -122,5 +80,16 @@ describe("Envelope", function () {
             assert.strictEqual(budget.availableAmount, 1750)
         })        
     })
+    describe("removeExpense", function () {
+        it("removes the rigth envelope", function() {
+            envelopeWithExpense.removeExpense(8)
+            assert.deepEqual(envelopeWithExpense.expenses, {
+                7: expenses[0],
+                9: expenses[2]
+            })
+        })
+        it("correctly update availableAmount", function () {
+            assert.strictEqual(envelopeWithExpense.availableAmount, 600)
+        })
+    })
 })
-    

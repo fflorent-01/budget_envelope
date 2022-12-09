@@ -1,14 +1,14 @@
 // TODO: Check the json export
 const FinanceElement = require("./finance-element")
 
-let _incomeCounter = 0
+let _expenseCounter = 0
 
-class Income extends FinanceElement {
+class Expense extends FinanceElement {
 
     constructor (parent, name, description, amount) {
         super(parent, name, description, amount)
-        _incomeCounter++
-        this._id = _incomeCounter
+        _expenseCounter++
+        this._id = _expenseCounter
     }
 
     get id () {
@@ -17,4 +17,4 @@ class Income extends FinanceElement {
 
 }
 
-module.exports = Income
+module.exports = Expense

@@ -16,14 +16,14 @@ class Budget {
         this._availableAmount = 0
     }
 
-    get incomeSources() {
+    get incomeSources () {
         return this._incomeSources
     }
-    getIncomeSourceById(incomeId) {
+    getIncomeSourceById (incomeId) {
         const incomeSource = this.incomeSources[incomeId]
         return incomeSource
     }
-    addIncomeSource(name, description, amount) {
+    addIncomeSource (name, description, amount) {
         const newIncomeSource = new Income(this, name, description, amount)
         this._incomeSources[newIncomeSource.id] = newIncomeSource
 
@@ -32,18 +32,20 @@ class Budget {
 
         return newIncomeSource
     }
-    removeIncomeSource(incomeId) {
+    removeIncomeSource (incomeId) {
         delete this.incomeSources[incomeId]
+
+        this.updateIncome()
+        this.updateAvailableAmount()
     }
 
-    get envelopes() {
+    get envelopes () {
         return this._envelopes
     }
-    getEnvelopeById(envelopeId) {
-        const envelope = this._envelopes[envelopeId]
-        return envelope
+    getEnvelopeById (envelopeId) {
+        return this._envelopes[envelopeId]
     }
-    addEnvelope(name, description, amount) {
+    addEnvelope (name, description, amount) {
 
         const newEnvelope = new Envelope(this, name, description, amount)
         this._envelopes[newEnvelope.id] = newEnvelope
@@ -53,8 +55,10 @@ class Budget {
 
         return newEnvelope
     }
-    removeEnvelope(envelopeId) {
+    removeEnvelope (envelopeId) {
         delete this.envelopes[envelopeId]
+
+        this.updateAvailableAmount()
     }
 
     get income () {
@@ -75,7 +79,7 @@ class Budget {
             .reduce( (total, envelope) => total + envelope._amount || 0, 0 )
     }
 
-    toJson(){
+    toJson (){
         return prettyJson(this)
     }
 }
