@@ -1,4 +1,4 @@
-const Budget = require("../../models/budget");
+const Budget = require("../models/budget");
 
 // Starting income = 6000
 const dummyIncomeSources = [

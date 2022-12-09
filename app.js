@@ -6,6 +6,12 @@ const morgan = require("morgan")
 // Set environement varaibles
 const PORT = process.env.port || 8080
 
+// Start db
+// Never do this again
+const createBudget = require("./db/createBudget")
+const { budget: db } = createBudget()
+process.db = db
+
 // Start app
 const app = express()
 app.listen(PORT, () => console.log(`Listening on port ${PORT} ...`))
@@ -18,4 +24,3 @@ app.use(morgan('dev'))
 // Here will be the routes
 const apiRouter = require("./routes/api")
 app.use('/api', apiRouter)
-

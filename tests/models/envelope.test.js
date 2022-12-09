@@ -1,6 +1,6 @@
 const assert = require("chai").assert;
 const Budget = require("../../models/budget");
-const createNewBudget = require("./dummyBudget")
+const createNewBudget = require("../../db/createBudget")
 
 describe("Envelope", function () {
     const { budget, envelopes, expenses } = createNewBudget()

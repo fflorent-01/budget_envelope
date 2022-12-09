@@ -2,7 +2,7 @@ const assert = require("chai").assert;
 const Budget = require("../../models/budget");
 const Income = require("../../models/income")
 const Envelope = require("../../models/envelope")
-const createNewBudget = require("./dummyBudget")
+const createNewBudget = require("../../db/createBudget")
 
 describe("Budget Class", function () {
     
@@ -141,4 +141,3 @@ describe("Budget Class", function () {
         })
     })
 })
-

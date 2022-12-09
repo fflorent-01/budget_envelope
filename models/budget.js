@@ -3,7 +3,7 @@
 const Income = require("./income")
 const Envelope = require("./envelope")
 
-const { prettyJson } =require("../utils")
+const { prettyJson } =require("../utils/utils")
 
 class Budget {
     /*

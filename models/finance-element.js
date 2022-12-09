@@ -1,3 +1,5 @@
+const { prettyJson } =require("../utils/utils")
+
 class FinanceElement {
     constructor (parent, name, description, amount) {
         if (new.target === FinanceElement) {
@@ -69,6 +71,10 @@ class FinanceElement {
         }
         this.parent.updateAvailableAmount()
      }
+
+    toJson (){
+        return prettyJson(this)
+    }
 }
 
 module.exports = FinanceElement

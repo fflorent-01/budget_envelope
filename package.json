@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha tests/**/*.test.js",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon --trace-warnings app.js "
   },
   "repository": {
     "type": "git",

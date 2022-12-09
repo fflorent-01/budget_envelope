@@ -8,10 +8,10 @@ apiRouter.use("/budget", budgetRouter)
 
 // Envelopes routes
 const envelopeRouter = require("./envelope")
-apiRouter.use("/envelope", envelopeRouter)
+apiRouter.use("/envelopes", envelopeRouter)
 
 // Expense routes
 const expenseRouter = require("./expense")
-apiRouter.use("/expense", expenseRouter)
+apiRouter.use("/expenses", expenseRouter)
 
 module.exports = apiRouter
