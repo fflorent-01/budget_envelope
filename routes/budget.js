@@ -12,22 +12,22 @@ budgetRouter.route("/")
     .post( (req, res) => {
         const {name, description, amount} = req.body
         if ( !(name && amount && typeof description === "string") ) {
-            res.sendStatus(400)
+            return res.sendStatus(400)
         }
         try {
             const newIncomeSource = budget.addIncomeSource(name, description, amount)
             if ( newIncomeSource ) {
-                res.send(newIncomeSource.toJson())
+                res.status(201).send(newIncomeSource.toJson())
             }
         } catch (err) {
-            res.sendStatus(500)
+            return res.status(500).send(err.message)
         }
     })
 
 budgetRouter.param("incomeSourceId", (req, res, next, id) => {
     const incomeSource = budget.getIncomeSourceById(id)
     if ( !incomeSource ) {
-        res.sendStatus(404)
+        return res.sendStatus(404)
     }
     req.incomeSource = incomeSource
     next()
@@ -59,7 +59,7 @@ budgetRouter.route("/:incomeSourceId")
                 req.incomeSource.amount = amount
             }            
         } catch (err) {
-            return res.status(400).send(err.message)
+            return res.status(500).send(err.message)
         }
 
         res.send(req.incomeSource.toJson())
@@ -68,11 +68,9 @@ budgetRouter.route("/:incomeSourceId")
         try {
             budget.removeIncomeSource(req.incomeSource.id)
         } catch (err) {
-            return res.status(400).send(err.message)
+            return res.status(500).send(err.message)
         }
         res.sendStatus(202)
     })
-
-
 
 module.exports = budgetRouter

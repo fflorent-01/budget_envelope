@@ -4,7 +4,8 @@
   "description": "A backend tool to create a budget, manage income and envelopes as well as expenses.",
   "main": "server.js",
   "scripts": {
-    "test": "mocha tests/**/*.test.js",
+    "test_models": "mocha tests/models/*.test.js",
+    "test_routes": "cross-env PORT=8000 mocha tests/routes/*.test.js --watch",
     "start": "node app.js",
     "dev": "nodemon --trace-warnings app.js "
   },
@@ -20,9 +21,11 @@
   "homepage": "https://github.com/fflorent-01/budget_envelope#readme",
   "devDependencies": {
     "chai": "^4.3.7",
+    "cross-env": "^7.0.3",
+    "lodash": "^4.17.21",
     "mocha": "^10.1.0",
-    "supertest": "^6.3.2",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.2"
   },
   "dependencies": {
     "body-parser": "^1.20.1",
