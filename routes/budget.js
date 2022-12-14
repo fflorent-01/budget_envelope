@@ -10,18 +10,21 @@ budgetRouter.route("/")
         res.send(budget.toJson())
     })
     .post( (req, res) => {
+
         const {name, description, amount} = req.body
-        if ( !(name && amount && typeof description === "string") ) {
-            return res.sendStatus(400)
-        }
+        let newIncomeSource
+
         try {
-            const newIncomeSource = budget.addIncomeSource(name, description, amount)
-            if ( newIncomeSource ) {
-                res.status(201).send(newIncomeSource.toJson())
-            }
+            newIncomeSource = budget.addIncomeSource(name, description, amount)
         } catch (err) {
-            return res.status(500).send(err.message)
+            return res.status(400).send(err.message)
         }
+
+        if ( !newIncomeSource ) {
+            return res.sendStatus(500)
+        }
+
+        return res.status(201).send(newIncomeSource.toJson())
     })
 
 budgetRouter.param("incomeSourceId", (req, res, next, id) => {
@@ -35,8 +38,7 @@ budgetRouter.param("incomeSourceId", (req, res, next, id) => {
 
 budgetRouter.route("/income")
     .get( (req, res) => {
-        const incomeSources = budget.toJson()["incomeSources"]
-        res.send(Object.values(incomeSources))
+        res.send(Object.values(budget.toJson()["incomeSources"]))
     })
 
 budgetRouter.route("/:incomeSourceId")
@@ -48,6 +50,7 @@ budgetRouter.route("/:incomeSourceId")
         if ( !(name || typeof description === "string" || amount) ) {
             return res.sendStatus(400)
         }
+        // TODO: Need to insure no partial change ?
         try {
             if ( name ) {
                 req.incomeSource.name = name

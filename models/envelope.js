@@ -25,6 +25,12 @@ class Envelope extends FinanceElement {
         return this._expenses[expenseId]
     }
     addExpense (name, description, amount) {
+
+
+        if ( this.availableAmount < amount ) {
+            throw new Error(`Amount (${amount} is greater than the available amount (${this.availableAmount}) )`)
+        }
+
         const newExpense = new Expense(this, name, description, amount)
         this._expenses[newExpense.id] = newExpense
 
@@ -44,7 +50,7 @@ class Envelope extends FinanceElement {
     updateAvailableAmount () {
         this._availableAmount = this.amount - Object
             .values(this.expenses)
-            .reduce( (total, expense) => total + expense.amount || 0, 0 )
+            .reduce( (total, expense) => total + expense.amount, 0 )
     }
 }
 

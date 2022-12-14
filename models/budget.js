@@ -47,6 +47,10 @@ class Budget {
     }
     addEnvelope (name, description, amount) {
 
+        if ( this.availableAmount < amount ) {
+            throw new Error(`Amount (${amount} is greater than the available amount (${this.availableAmount}) )`)
+        }
+
         const newEnvelope = new Envelope(this, name, description, amount)
         this._envelopes[newEnvelope.id] = newEnvelope
 
@@ -67,7 +71,7 @@ class Budget {
     updateIncome () {
         this._income = Object
             .values(this.incomeSources)
-            .reduce( (total, source) => total + source._amount || 0, 0 );
+            .reduce( (total, source) => total + source._amount, 0 )
     }
 
     get availableAmount () {
@@ -76,7 +80,7 @@ class Budget {
     updateAvailableAmount () {
         this._availableAmount = this.income - Object
             .values(this.envelopes)
-            .reduce( (total, envelope) => total + envelope._amount || 0, 0 )
+            .reduce( (total, envelope) => total + envelope._amount, 0 )
     }
 
     toJson (){

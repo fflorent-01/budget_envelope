@@ -90,21 +90,20 @@ describe("/api/budget routes", function () {
         })
     })
     describe("POST /api/budget", function () {
-        it("using correct arguments should return 201", function (done){
+        it("using correct arguments should return 201", function (){
             const newIncomeSource = {
                 "name": "New Income Source",
                 "description": "New Income Source Description",
-                "amount": 100
+                "amount": 1000
             }
             return request(app)
                 .post("/api/budget")
                 .send(newIncomeSource)
                 .expect(201)
-                .end((err, res) => {
-                    if (err) return done(err)
-                    newIncomeSource.id = res.body.id
-                    expect(res.body).to.be.deep.equal(newIncomeSource)
-                }, done())
+                .then(response => {
+                    expect(response.body).to.deep.include(newIncomeSource)
+                })
+
         })
         it("omiting name should return 400", function () {
             const newIncomeSource = {

@@ -5,6 +5,25 @@ class FinanceElement {
         if (new.target === FinanceElement) {
             throw new TypeError(`${new.target} is meant as an abstract class and cannot be directly instanciated.`)
         }
+        if (typeof name !== 'string' || name === "") {
+            throw new Error(`[${name}] is not a valid name, a string is needed.`)
+        }
+        if (typeof description !== 'string') {
+            throw new Error(`[${description}] is not a valid description, a string is needed.`)
+        }
+        if (typeof amount !== "number") {
+            throw new Error(`Amount (${amount}) is not a valid amount, a number is needed.`)
+        } else if ( amount < 0) {
+            throw new Error(`Amount (${amount}) must be a positive number.`)
+        }
+        // I don't like how this is coupled I'll have to find a better design
+        if ( !parent.constructor.name === 'Income' ) {
+            if ( amount > parent.availableAmount ) {
+                throw new Error(
+                    `Amount (${amount} is greater than the available amount (${parent.availableAmount}) )`
+                    )
+            }
+        }
         this._parent = parent
         this._parentType = parent.constructor.name
         this._parentId = parent.id || ""

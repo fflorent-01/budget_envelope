@@ -115,6 +115,9 @@ describe("Budget Class", function () {
             it("correclty triggers updateAvailableAmount()", function() {
                 assert.equal(budget.availableAmount, 2250)
             })
+            it("refuse to create if amount > availableAmount", function () {
+                assert.throw(() => budget.addEnvelope("name", "description", 99999), Error)
+            })
         })
         describe("getEnvelopeById()", function () {
             it("return the correct Envelope object", function () {

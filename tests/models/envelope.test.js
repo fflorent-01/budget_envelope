@@ -75,7 +75,9 @@ describe("Envelope", function () {
         it('refuse negative number', function () {
             assert.throw(() => envelope.amount = -2000, Error)
         })
-
+        it('refuse if amount > availableAmount', function () {
+            assert.throw(() => envelope.amount = 999999, Error)
+        })
         it("correctly changes availableAmount", function() {
             assert.strictEqual(budget.availableAmount, 1750)
         })        
