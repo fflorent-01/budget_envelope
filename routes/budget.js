@@ -50,7 +50,6 @@ budgetRouter.route("/:incomeSourceId")
         if ( !(name || typeof description === "string" || amount) ) {
             return res.sendStatus(400)
         }
-        // TODO: Need to insure no partial change ?
         try {
             if ( name ) {
                 req.incomeSource.name = name

@@ -2,59 +2,23 @@ const Budget = require("../models/budget");
 
 // Starting income = 6000
 const dummyIncomeSources = [
-    [
-        "First Job",
-        "Money from first job",
-        1000
-    ],
-    [
-        "Second Job",
-        "Money from second job",
-        2000
-    ],
-    [
-        "Third Job",
-        "Money from third job",
-        3000
-    ]
+    ["First Job", "Money from first job", 1000],
+    ["Second Job", "Money from second job", 2000],
+    ["Third Job", "Money from third job", 3000]
 ]
 
 // Starting envelopes amount = 3750
 const dummyEnvelopes = [
-    [
-        "Mortgage",
-        "Paying for the house",
-        1500
-    ],
-    [
-        "Food",
-        "All groceries, snacks",
-        500
-    ],
-    [
-        "Misc",
-        "Everything else",
-        1750
-    ]
+    ["Mortgage", "Paying for the house", 1500],
+    ["Food", "All groceries, snacks", 500],
+    ["Misc", "Everything else", 1750]
 ]
 
 // Starting expenses = 1500
 const dummyExpenses = [
-    [
-        "Spectacle",
-        "2 tickets for mucis concert",
-        150
-    ],
-    [
-        "Gadget",
-        "Nouveau gadget pour la cuisine",
-        350
-    ],
-    [
-        "Vacances",
-        "Weekend à Québec",
-        1000
-    ]
+    ["Spectacle", "2 tickets for mucis concert", 150],
+    ["Gadget", "Nouveau gadget pour la cuisine", 350],
+    ["Vacances", "Weekend à Québec", 1000]
 ]
 
 const createNewBudget = () => {

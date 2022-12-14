@@ -1,4 +1,3 @@
-// TODO: Check the json export
 const FinanceElement = require("./finance-element")
 
 let _incomeCounter = 0

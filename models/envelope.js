@@ -1,4 +1,3 @@
-// TODO: Check the json export
 const FinanceElement = require("./finance-element")
 const Expense = require("./expense")
 
@@ -28,7 +27,9 @@ class Envelope extends FinanceElement {
 
 
         if ( this.availableAmount < amount ) {
-            throw new Error(`Amount (${amount} is greater than the available amount (${this.availableAmount}) )`)
+            throw new Error(
+                `Amount (${amount} is greater than the available amount (${this.availableAmount}).`
+                )
         }
 
         const newExpense = new Expense(this, name, description, amount)
