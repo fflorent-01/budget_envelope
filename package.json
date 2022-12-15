@@ -1,0 +1,37 @@
+{
+  "name": "budget_envelope",
+  "version": "1.0.0",
+  "description": "A backend tool to create a budget, manage income and envelopes as well as expenses.",
+  "main": "server.js",
+  "scripts": {
+    "test_models": "mocha tests/models/*.test.js",
+    "test_routes": "cross-env PORT=8000 mocha tests/routes/*.test.js --watch",
+    "start": "node app.js",
+    "dev": "nodemon --trace-warnings app.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fflorent-01/budget_envelope.git"
+  },
+  "author": "François Florent",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fflorent-01/budget_envelope/issues"
+  },
+  "homepage": "https://github.com/fflorent-01/budget_envelope#readme",
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.29.0",
+    "lodash": "^4.17.21",
+    "mocha": "^10.1.0",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
+  }
+}
