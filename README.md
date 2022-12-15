@@ -2,110 +2,55 @@
 
 Personal Budget app project from Code Academy backend engineer career path
 
-Plan:
-- Use class based object to monitor:
-  - Budget  **This will act as the main interface**
-    - _incomeSources => Object {'incomeId': Income, ...}]
-      - getIncomeSources() => return  this._incomeSources
-      - getIncomeSourceById('incomeId') => return specific Income object
-      - addIncomeSource(name, descritption, amount) => return new created Income object
-        - Must trigger this.updateIncome()
-        - Must trigger this.updateAvailableIncome()
-      - removeIncomeSource("incomeId") => Delete a specific Income
-        - Must trigger this.updateIncome()
-        - Must trigger this.updateAvailableIncome()
-    - _envelopes => Object {'EnvelopeID': Envelope, ...}
-      - getEnvelopes() => return  this._envelopes
-      - getEnvelopeById('envelopeId') => return specific Envelope object
-      - getEnvelopeByExpenseId('expenseId') => return Evelope object ???
-      - addEnvelopes(name, descritption, amount) => return new created Envelope object
-        - Must trigger this.updateAvailableIncome()
-      - removeEnvelope('envelopeId') => Delete a specific Envelope
-        - Must trigger this.updateAvailableIncome()
-    - _income => Number - **Needs special care to stay up to date** ???
-      - getIncome() => return  this._income
-      - updateIncome() => set this._income based on Object.values(this.getIncomeSources()).reduce( (total, source) => total + source.amount, 0 )
-    - _availableAmount => Number **Needs special care to stay up to date** ???
-      - getAvailableAmount() => return this._availableIncome
-      - updateAvailableAmount() =>  set this._availableIncome based on this.getIncome() - Object.values(this.getEnvelopes()).reduce( (total, envelope) => total + envelope.amount, 0 )
+Note:
+- my first 'big' project using js
+- my first project using unit testing (any language)
 
-  - FinanceElement => **Kind of an abstract class**
-    -  if (new.target === Abstract) {
-        throw new TypeError("Cannot construct Abstract instances directly");
-      } in constructor
-    - _name => String
-      - getName()
-      - setName('name')
-    - _description => String
-      - getDescription()
-      - setDescription('description')
-    - _amount => Number
-      - getAmount()
-      - setAmount(amount)
-        - this.getParent().updateAvailableAmount()
-    - _parent => class instance  ***Bad for coupling but I don't see how else to do it***
-      - getParent() => return parent instance class 
+Aim of the exercise: 
+- practice setting up API endpoint
 
-  - Income(FinanceElement)
-    - _counter => To give a uniqueID
-      - use _counter++ in constructor
-    - setAmount(amount)
-      - ***Must trigger [budget].updateIncome()***
-      - ~***Must trigger [budget].updateAvailableAmount()***~
+Self-added aim: 
+- explore class dependency and relations
+- explore unit testing
 
-  - Expense(FinanceElement)
-    - _counter => To give a uniqueID
-      - use _counter++ in constructor
-    - setAmount(amount)
-      - amount - this.amount >= this.getParent().availableAmount
-      - ~***Must trigger [envelope].updateAvailableAmount()***~
+Known limitation:
+- using an actual db or using fixed data structure would have been more efficient
+- I over tested and was not consistent in using TDD
+- Tests could have a better design
 
-  - Envelope(FinanceElement)
-    - _counter => To give a uniqueID
-      - use _counter++ in constructor
-    - _expenses => Object {'ExpenseID': Expense}
-      - getExpenses() => return  this._expenses
-      - getExpenseById('expenseId') => return specific Expense object
-      - addExpense(name, descritption, amount) => return new created Expense object
-        - Must trigger this.updateAvailableAmount()
-      - removeExpense('expenseId') => Delete a specific Expense
-        - Must trigger this.updateAvailableAmount()
-    - _availableAmount => Number **Needs special care to stay up to date** ???
-      - getAvailableAmount()  => return this._availableAmount
-      - updateAvailableAmount()  =>  set this._availableAmount based on this.getAmount() - Object.values(this.getExpenses()).reduce( (total, expense) => total + expense.amount, 0 )
-    - setAmount(amount)
-      - amount - this.amount >= this.getParent().availableAmount
+Deploy API endpoints to allow:
 
-- Use ObserverPattern to monitor changes and keep everything coherent ???
-  - Listen:
-    - on('expense_amount_change') // Must be lower/equal to parent availableAmount
-    - on('envelope_amount_change') // Must be lower/equal to parent availableAmount
-  - Calulate updateIncome() whenever an envelope Available amount change
-  - Calculate updateAvailableIncome() whenever an expense get modified
-
-- Deploy API endpoints to allow:
-  - /budget:
-    - get => return ALL income, availableIncome, getIncomeSources, getEnvelopes
+- Budget / income:
+  - /api/budget:
+    - get => return ALL budget info : income, available income, income sources, envelopes
     - post => add an income source
-  - /budget/:incomeSourceId
+  - /api/budget/income
+    - get => return all income sources
+  - /api/budget/:incomeSourceId
     - get => return name, description, amount of an income source
-    - put => overwrite an income source 
+    - put => overwrite income source properties (name, description, amount)
     - delete => delete an income source
-  - /envelopes:
-    - get => return ALL name, description, amount, availableAmount, getExpenses
+
+- Envelope / Expense
+  - /api/envelopes:
+    - get => return ALL envelope infos: name, description, amount, available amount, expenses
     - post => add an envelope
-  - /envelopes/:envelopeID
-    - get => return name, description, amount, availableAmount, getExpenses of an envelope
-    - put => overwrite an envelope
+  - /api/envelopes/:envelopeId
+    - get => return name, description, amount, available amount, expenses of an envelope
+    - put => overwrite an envelope properties (name, description, amount)
     - delete => delete an envelope
-  - /expense:
-    - get => return ALL name, description, amount
-  - /expense/:envelopeId
-    - get => => return  ALL name, description, amount of specified envelope
-    - post => create new expense in associated envelope
-  - /expense/:expenseId
+  - /api/envelopes/:envelopeId/expenses:
+    - get => return ALL expenses for an envelope
+    - post => add an expense to an envelope
+
+- Expense
+  - /api/epxpenses:
+    - get => return ALL expenses
+  - /api/expenses/:expenseId
+    - get => return name, description, amount of specified envelope
+    - put => overwrite expense properties (name, description, amount)
+  - /api/expenses/:expenseId
     - get => return name, description, amount
-    - put => overwrite an expense
+    - put => overwrite an expense (name, description, amount)
     - delete => delete an expense
-  - /expense/:expenseId/:envelopeId
     - post => transfers current expense to specified envelope
