@@ -1,5 +1,11 @@
 const { prettyJson } =require("../utils/utils")
 
+/**
+* Represent a finance element
+* Validate common property values during instanciation.
+* Provide common getter / setter
+* Trigger parent recalculate when amount is modified
+*/
 class FinanceElement {
     constructor (parent, name, description, amount) {
         if (new.target === FinanceElement) {
@@ -32,7 +38,6 @@ class FinanceElement {
         this._amount = amount
     }
 
-    // TODO: parent seems to be problematic
     get parent () {
         return this._parent
     }
@@ -75,7 +80,6 @@ class FinanceElement {
             throw new Error(`Amount (${amount}) must be a positive number.`)
         }
 
-        // I don't like how this is coupled I'll have to find a better design
         const isIncome = this.constructor.name === "Income"
         if ( !isIncome ) {
             if ( amount > this.parent.availableAmount ) {

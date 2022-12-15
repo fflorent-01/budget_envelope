@@ -3,10 +3,13 @@ const Envelope = require("./envelope")
 
 const { prettyJson } =require("../utils/utils")
 
+/**
+* Topmost item in the structure
+* Act as kind of a db.
+* Hold income sources and envelopes.
+*/
 class Budget {
-    /*
-        Topmost object in the project. Holds income sources and envelopes.
-    */
+
     constructor (incomeSources={}, envelopes={}) {
         this._incomeSources = incomeSources
         this._envelopes = envelopes

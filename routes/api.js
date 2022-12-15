@@ -1,7 +1,12 @@
-const Router = require("express").Router
+const { Router } = require("express")
+
 
 const apiRouter = Router()
 
+/**
+ * Middleware that checks the validity of name, description, amount
+ * @returns {NextFunction | res.status}
+ */
 const bodyParameterChecker = (req, res, next) => {
 
     const { name, description, amount } = req.body

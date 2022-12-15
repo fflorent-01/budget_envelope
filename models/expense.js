@@ -3,6 +3,10 @@ const FinanceElement = require("./finance-element")
 
 let _expenseCounter = 0
 
+/**
+* Represent an expense. 
+* @extends FinanceElement
+*/
 class Expense extends FinanceElement {
 
     constructor (parent, name, description, amount) {

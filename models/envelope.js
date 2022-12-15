@@ -3,6 +3,11 @@ const Expense = require("./expense")
 
 let _envelopeCounter = 0
 
+/**
+* Represent a budget Envelope. 
+* Mainly hold expenses and keep track of available amount.
+* @extends FinanceElement
+*/
 class Envelope extends FinanceElement {
 
     constructor (parent, name, description, amount) {

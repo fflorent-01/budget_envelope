@@ -21,7 +21,14 @@ const dummyExpenses = [
     ["Vacances", "Weekend à Québec", 1000]
 ]
 
+/**
+ * Generates a dummy budget for testing puposes
+ * @function createNewBudget
+ * @private
+ * @returns {Object}    Object containing differents info on the dummy budget
+ */
 const createNewBudget = () => {
+
     const budget = new Budget()
 
     const sources = []
