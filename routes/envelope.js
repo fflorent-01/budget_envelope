@@ -1,20 +1,19 @@
-const { env } = require("process")
-
+/* global process */
 const Router = require("express").Router
-const budget = process.db
+const db = process.db
 
 const envelopeRouter = Router()
 
 envelopeRouter.route("/")
     .get( (req, res) => {
-        res.send(Object.values(budget.toJson()["envelopes"]))
+        res.send(Object.values(db.toJson()["envelopes"]))
     })
     .post((req, res) => {
         
         const {name, description, amount} = req.body
         let newEnvelope
         try {
-            newEnvelope = budget.addEnvelope(name, description, amount)
+            newEnvelope = db.addEnvelope(name, description, amount)
         } catch(err) {
             return res.status(400).send(err.message)
         }
@@ -26,13 +25,14 @@ envelopeRouter.route("/")
     })
 
 envelopeRouter.param("envelopeId", (req, res, next, id) => {
-    const envelope = budget.getEnvelopeById(id)
+    const envelope = db.getEnvelopeById(id)
     if ( !envelope ) {
         return res.sendStatus(404)
     }
     req.envelope = envelope
     next()
 })
+
 envelopeRouter.route("/:envelopeId")
     .get((req, res) => {
         res.send(req.envelope.toJson())
@@ -64,6 +64,30 @@ envelopeRouter.route("/:envelopeId")
             return res.status(500).send(err.message)
         }
         res.sendStatus(202)
+    })
+
+envelopeRouter.route("/:envelopeId/expenses")
+    .get((req, res) => {
+        const expenses = req.envelope.expenses
+        if ( !expenses ) {
+            return res.send([])
+        }
+
+        const envelopeExpenses = Object.values(expenses)
+            .map((expense) => expense.toJson())
+
+        res.send(envelopeExpenses)
+    })
+    .post((req, res) => {
+        let expense
+        try {
+            const {name, description, amount} = req.body
+            expense = req.envelope.addExpense(name, description, amount)
+        } catch(err) {
+            return res.status(400).send(err.message)
+        }
+
+        res.status(201).send(expense.toJson())
     })
 
 module.exports = envelopeRouter

@@ -1,12 +1,11 @@
-const assert = require("chai").assert;
-const Budget = require("../../models/budget");
+/* global describe, it */
+const assert = require("chai").assert
 const createNewBudget = require("../../db/createBudget")
 
 describe("Envelope", function () {
     const { budget, envelopes, expenses } = createNewBudget()
     const envelope = envelopes[0]
     const envelopeWithExpense = envelopes[2]
-    const expense = expenses[0]
     describe("get operations", function () {
         it("get parent", function () {
             assert.deepEqual(envelope.parent, budget)
@@ -65,17 +64,17 @@ describe("Envelope", function () {
         })
     })
     describe("set amount" , function () {
-        it('set amount', function () {
+        it("set amount", function () {
             envelope.amount = 2000
             assert.strictEqual(envelope.amount, 2000)
         })
-        it('refuse non-number', function () {
+        it("refuse non-number", function () {
             assert.throw(() => envelope.amount = "2000", Error)
         })
-        it('refuse negative number', function () {
+        it("refuse negative number", function () {
             assert.throw(() => envelope.amount = -2000, Error)
         })
-        it('refuse if amount > availableAmount', function () {
+        it("refuse if amount > availableAmount", function () {
             assert.throw(() => envelope.amount = 999999, Error)
         })
         it("correctly changes availableAmount", function() {

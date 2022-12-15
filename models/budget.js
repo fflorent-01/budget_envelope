@@ -48,7 +48,7 @@ class Budget {
         if ( this.availableAmount < amount ) {
             throw new Error(
                 `Amount (${amount} is greater than the available amount (${this.availableAmount}).`
-                )
+            )
         }
 
         const newEnvelope = new Envelope(this, name, description, amount)
@@ -63,6 +63,26 @@ class Budget {
         delete this.envelopes[envelopeId]
 
         this.updateAvailableAmount()
+    }
+
+    // Not sure this is the best design, but it is simple
+    get expenses () {
+        // Since this is only intended for API call
+        const expenses = []
+        for (const envelope of Object.values(this.envelopes)) {
+            for (const expense of Object.values(envelope.expenses)) {
+                expenses.push(expense.toJson())
+            }
+        }
+        return expenses
+    }
+    getExpenseById (expenseId) {
+        for (const envelope of Object.values(this.envelopes)) {
+            const expense = envelope.getExpenseById(expenseId)
+            if ( expense ) {
+                return expense
+            }
+        }
     }
 
     get income () {

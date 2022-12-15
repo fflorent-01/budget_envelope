@@ -1,7 +1,8 @@
-const expect = require("chai").expect;
-const request = require("supertest");
+/*global describe, it, process*/
+const expect = require("chai").expect
+const request = require("supertest")
 
-const app = require("../../app");
+const app = require("../../app")
 const db = process.db
 
 describe("/api/envelopes routes", function () {
@@ -27,7 +28,7 @@ describe("/api/envelopes routes", function () {
                 .get("/api/envelopes")
                 .expect(200)
                 .then(response => {
-                     expect(response.body).to.eql(envelopes)
+                    expect(response.body).to.eql(envelopes)
                 })
         })
     })
@@ -121,14 +122,65 @@ describe("/api/envelopes routes", function () {
     })
     describe("DELETE api/envelope/:envelopeId", function () {
         it("return 404 if non valid id", function () {
-                    return request(app)
-            .delete("/api/envelopes/9999")
-            .expect(404)
+            return request(app)
+                .delete("/api/envelopes/9999")
+                .expect(404)
         })
         it("return 202 if valid id", function () {
             return request(app)
                 .delete("/api/envelopes/1")
                 .expect(202)
+        })
+    })
+})
+describe("/api/envelopes/:envelopeId/expenses routes", function () {
+    describe("GET /api/envelopes/:envelopeId/expenses", function () {
+        it("return all expense of envelopeId", function () {
+            const envelopeExpenses = Object.values(db.getEnvelopeById(3).expenses)
+                .map((expense) => expense.toJson())
+
+            return request(app)
+                .get("/api/envelopes/3/expenses")
+                .expect(200)
+                .then(response => {
+                    expect(response.body).to.have.same.deep.members(envelopeExpenses)
+                })
+        })
+        it("return empty for empty Envelope", function () {
+            return request(app)
+                .get("/api/envelopes/2/expenses")
+                .expect(200)
+                .then(response => {
+                    expect(response.body).to.have.same.deep.members([])
+                })
+        })
+    })
+    describe("POST /api/envelopes/:envelopeId/expenses", function () {
+        it("add an expense to the correct envelope", function() {
+            const newExpense = {
+                "name": "New expense",
+                "description": "New description",
+                "amount": 50
+            }
+            return request(app)
+                .post("/api/envelopes/2/expenses")
+                .send(newExpense)
+                .expect(201)
+                .then(response => {
+                    expect(response.body).to.deep.include(newExpense)
+                    expect(response.body.parentId).to.eql(2)
+                })
+        })
+        it("refuses amount too big with code 400", function () {
+            const newExpense = {
+                "name": "New expense",
+                "description": "New description",
+                "amount": 50000
+            }
+            return request(app)
+                .post("/api/envelopes/2/expenses")
+                .send(newExpense)
+                .expect(400)
         })
     })
 })

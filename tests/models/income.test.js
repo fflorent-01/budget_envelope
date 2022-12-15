@@ -1,5 +1,5 @@
-const assert = require("chai").assert;
-const Budget = require("../../models/budget");
+/* global describe, it */
+const assert = require("chai").assert
 const createNewBudget = require("../../db/createBudget")
 
 describe("Income", function () {

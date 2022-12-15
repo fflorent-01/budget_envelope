@@ -1,5 +1,6 @@
-const assert = require("chai").assert;
-const Budget = require("../../models/budget");
+/* global describe, it */
+const assert = require("chai").assert
+const Budget = require("../../models/budget")
 const Income = require("../../models/income")
 const Envelope = require("../../models/envelope")
 const createNewBudget = require("../../db/createBudget")
@@ -29,10 +30,10 @@ describe("Budget Class", function () {
             assert.equal(emptyBudget.availableAmount, 0)
         })
         it("getIncomeSourceById('wrongId') returns undefined", function() {
-            assert.equal(emptyBudget.getIncomeSourceById('wrongId'), undefined)
+            assert.equal(emptyBudget.getIncomeSourceById("wrongId"), undefined)
         })
         it("getEnvelopeById('wrongId') returns undefined", function() {
-            assert.equal(emptyBudget.getEnvelopeById('wrongId'), undefined)
+            assert.equal(emptyBudget.getEnvelopeById("wrongId"), undefined)
         })
         it("updateIncome() changes income to 0", function() {
             emptyBudget._income = null

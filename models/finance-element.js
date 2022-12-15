@@ -5,10 +5,10 @@ class FinanceElement {
         if (new.target === FinanceElement) {
             throw new TypeError(`${new.target} is meant as an abstract class and cannot be directly instanciated.`)
         }
-        if (typeof name !== 'string' || name === "") {
+        if (typeof name !== "string" || name === "") {
             throw new Error(`[${name}] is not a valid name, a string is needed.`)
         }
-        if (typeof description !== 'string') {
+        if (typeof description !== "string") {
             throw new Error(`[${description}] is not a valid description, a string is needed.`)
         }
         if (typeof amount !== "number") {
@@ -17,11 +17,11 @@ class FinanceElement {
             throw new Error(`Amount (${amount}) must be a positive number.`)
         }
         // I don't like how this is coupled I'll have to find a better design
-        if ( !parent.constructor.name === 'Income' ) {
+        if ( !parent.constructor.name === "Income" ) {
             if ( amount > parent.availableAmount ) {
                 throw new Error(
                     `Amount (${amount} is greater than the available amount (${parent.availableAmount}) )`
-                    )
+                )
             }
         }
         this._parent = parent
@@ -47,7 +47,7 @@ class FinanceElement {
         return this._name
     }
     set name (name) {
-        if (typeof name !== 'string' || name === "") {
+        if (typeof name !== "string" || name === "") {
             throw new Error(`[${name}] is not a valid name, a string is needed.`)
         }
 
@@ -58,7 +58,7 @@ class FinanceElement {
         return this._description
     }
     set description (description) {
-        if (typeof description !== 'string') {
+        if (typeof description !== "string") {
             throw new Error(`[${description}] is not a valid description, a string is needed.`)
         }
 
@@ -76,12 +76,12 @@ class FinanceElement {
         }
 
         // I don't like how this is coupled I'll have to find a better design
-        const isIncome = this.constructor.name === 'Income'
+        const isIncome = this.constructor.name === "Income"
         if ( !isIncome ) {
             if ( amount > this.parent.availableAmount ) {
                 throw new Error(
                     `Amount (${amount} is greater than the available amount (${this.parent.availableAmount}) )`
-                    )
+                )
             }
         }
         this._amount = amount
@@ -89,7 +89,7 @@ class FinanceElement {
             this.parent.updateIncome()
         }
         this.parent.updateAvailableAmount()
-     }
+    }
 
     toJson (){
         return prettyJson(this)

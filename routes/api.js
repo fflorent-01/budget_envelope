@@ -9,7 +9,7 @@ const bodyParameterChecker = (req, res, next) => {
     if (name && (typeof name !== "string" || name === "") ) {
         return res.status(400).send("Argument [name] must be a non-empty string.")
     }
-    if ( !['string', 'undefined'].includes(typeof description) ) {
+    if ( !["string", "undefined"].includes(typeof description) ) {
         return res.status(400).send("Argument [description] must be a string.")    
     }
     if (amount && (typeof amount !== "number" || amount < 0) ) {

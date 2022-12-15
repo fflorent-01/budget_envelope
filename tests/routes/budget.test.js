@@ -1,8 +1,8 @@
-const expect = require("chai").expect;
-const request = require("supertest");
-const { response } = require("../../app");
+/* global describe, it, process*/
+const expect = require("chai").expect
+const request = require("supertest")
 
-const app = require("../../app");
+const app = require("../../app")
 const db = process.db
 
 
@@ -32,7 +32,7 @@ describe("/api/budget routes", function () {
                         expect(source).to.haveOwnProperty("name")
                         expect(source).to.haveOwnProperty("description")
                         expect(source).to.haveOwnProperty("amount")
-                    });
+                    })
                 })
         })
         it("return the correct number of envelopes and attributes", function () {
@@ -50,7 +50,7 @@ describe("/api/budget routes", function () {
                         expect(envelope).to.haveOwnProperty("amount")
                         expect(envelope).to.haveOwnProperty("expenses")
                         expect(envelope).to.haveOwnProperty("availableAmount")
-                    });
+                    })
                 })
         })
         it("return the correct number of expense and attributes for each envelopes", function () {
@@ -63,12 +63,12 @@ describe("/api/budget routes", function () {
                         const body_length = Object.keys(response.body.envelopes[key].expenses).length
                         expect(body_length).to.be.equal(source_length)
                         Object.values(response.body.envelopes[key].expenses).forEach((expense) => {
-                         expect(expense).to.haveOwnProperty("id")
-                         expect(expense).to.haveOwnProperty("parentId")
-                         expect(expense).to.haveOwnProperty("name")
-                         expect(expense).to.haveOwnProperty("description")
-                         expect(expense).to.haveOwnProperty("amount")
-                        });
+                            expect(expense).to.haveOwnProperty("id")
+                            expect(expense).to.haveOwnProperty("parentId")
+                            expect(expense).to.haveOwnProperty("name")
+                            expect(expense).to.haveOwnProperty("description")
+                            expect(expense).to.haveOwnProperty("amount")
+                        })
                     }
                 })
         })
@@ -134,13 +134,13 @@ describe("/api/budget routes", function () {
                 .then(response => {budget = response.body})
                 .then(() => {
                     return request(app)
-                    .get("/api/budget/income")
+                        .get("/api/budget/income")
                 })
                 .then(response => {
                     expect(response.body).to.deep.equal(Object.values(budget.incomeSources))
                     expect(response.status).to.be.equal(200)
                 })
-            })
+        })
     })
     describe("GET /api/budget/:incomeSourceId", function () {
         it("return correct object if valid id", function () {
@@ -150,10 +150,10 @@ describe("/api/budget routes", function () {
                 .then(response => {budget = response.body})
                 .then(() => {
                     return request(app)
-                    .get("/api/budget/1")
+                        .get("/api/budget/1")
                 })
                 .then(response => {
-                    expect(response.body).to.deep.equal(budget.incomeSources['1'])
+                    expect(response.body).to.deep.equal(budget.incomeSources["1"])
                     expect(response.status).to.be.equal(200)
                 })
         })

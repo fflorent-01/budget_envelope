@@ -25,11 +25,10 @@ class Envelope extends FinanceElement {
     }
     addExpense (name, description, amount) {
 
-
         if ( this.availableAmount < amount ) {
             throw new Error(
                 `Amount (${amount} is greater than the available amount (${this.availableAmount}).`
-                )
+            )
         }
 
         const newExpense = new Expense(this, name, description, amount)
@@ -43,6 +42,42 @@ class Envelope extends FinanceElement {
         delete this._expenses[expenseId]
         
         this.updateAvailableAmount()
+    }
+    
+    moveExpenseTo (expense, envelope) {
+
+        if (expense.constructor.name !== "Expense") {
+            throw new Error(
+                `${expense} is not a valid Expense object`
+            )
+        }
+        if (envelope.constructor.name !== "Envelope") {
+            throw new Error(
+                `${envelope} is not a valid Envelope object`
+            )
+        }
+        if ( expense.amount > envelope.availableAmount ) {
+            throw new Error(
+                `The expense you are trying to move has an amont \
+                (${expense.amount}) that is greater than the destination envelope \
+                available amount (${envelope.availableAmount}).`
+            )
+        }
+
+        try {
+            // Change expense reference to its parent
+            expense._parentId = envelope.id
+            expense._parent = envelope
+            // Add expense to the destination envelope
+            envelope._expenses[expense.id] = expense
+            envelope.updateAvailableAmount()
+            // Remove expense from the original envelope
+            delete this._expenses[expense.id]
+            this.updateAvailableAmount()
+        } catch(err) {
+            return err
+        }
+
     }
 
     get availableAmount () {

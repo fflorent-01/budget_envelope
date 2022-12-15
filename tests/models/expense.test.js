@@ -1,9 +1,9 @@
+/* global describe, it */
 const assert = require("chai").assert
-const Budget = require("../../models/budget")
 const createNewBudget = require("../../db/createBudget")
 
 describe("Expense", function () {
-    const { budget, envelopes, expenses } = createNewBudget()
+    const { envelopes, expenses } = createNewBudget()
     const envelopeWithExpense = envelopes[2]
     const expense = expenses[0]
     describe("get operations", function () {

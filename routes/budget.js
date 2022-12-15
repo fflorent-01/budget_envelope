@@ -1,13 +1,12 @@
-const { validateHeaderValue } = require("http")
-
+/* global process */
 const Router = require("express").Router
-const budget = process.db
+const db = process.db
 
 const budgetRouter = Router()
 
 budgetRouter.route("/")
     .get( (req, res) => {
-        res.send(budget.toJson())
+        res.send(db.toJson())
     })
     .post( (req, res) => {
 
@@ -15,7 +14,7 @@ budgetRouter.route("/")
         let newIncomeSource
 
         try {
-            newIncomeSource = budget.addIncomeSource(name, description, amount)
+            newIncomeSource = db.addIncomeSource(name, description, amount)
         } catch (err) {
             return res.status(400).send(err.message)
         }
@@ -28,7 +27,7 @@ budgetRouter.route("/")
     })
 
 budgetRouter.param("incomeSourceId", (req, res, next, id) => {
-    const incomeSource = budget.getIncomeSourceById(id)
+    const incomeSource = db.getIncomeSourceById(id)
     if ( !incomeSource ) {
         return res.sendStatus(404)
     }
@@ -38,7 +37,7 @@ budgetRouter.param("incomeSourceId", (req, res, next, id) => {
 
 budgetRouter.route("/income")
     .get( (req, res) => {
-        res.send(Object.values(budget.toJson()["incomeSources"]))
+        res.send(Object.values(db.toJson()["incomeSources"]))
     })
 
 budgetRouter.route("/:incomeSourceId")
@@ -68,7 +67,7 @@ budgetRouter.route("/:incomeSourceId")
     })
     .delete( (req, res) => {
         try {
-            budget.removeIncomeSource(req.incomeSource.id)
+            db.removeIncomeSource(req.incomeSource.id)
         } catch (err) {
             return res.status(500).send(err.message)
         }
