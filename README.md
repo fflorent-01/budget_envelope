@@ -18,7 +18,7 @@ Known limitation:
 - I over tested and was not consistent in using TDD
 - Tests could have a better design
 
-Deploy API endpoints to allow:
+##Deploy API endpoints allow:
 
 - Budget / income:
   - /api/budget:
