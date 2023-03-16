@@ -18,7 +18,7 @@ Known limitation:
 - I over tested and was not consistent in using TDD
 - Tests could have a better design
 
-##Deploy API endpoints allow:
+# API endpoints:
 
 - Budget / income:
   - /api/budget:
@@ -46,9 +46,6 @@ Known limitation:
 - Expense
   - /api/epxpenses:
     - get => return ALL expenses
-  - /api/expenses/:expenseId
-    - get => return name, description, amount of specified envelope
-    - put => overwrite expense properties (name, description, amount)
   - /api/expenses/:expenseId
     - get => return name, description, amount
     - put => overwrite an expense (name, description, amount)
